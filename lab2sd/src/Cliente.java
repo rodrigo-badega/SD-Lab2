@@ -37,21 +37,21 @@ public class Cliente {
             String tipo = br.readLine();
             String json;
             switch (tipo) {
-                case "read":
-                    json= "{\"method\":\"read\",\"args\":[\"\"]}\n";
+                case "read"://se o tipo for leitura (read)
+                    json= "{\"method\":\"read\",\"args\":[\"\"]}\n";//configura json no formato de read
                     // System.out.println(json);
-                    saida.writeUTF(json);
+                    saida.writeUTF(json);//envia json
                     break;
             
-                case "write":
+                case "write"://se o tipo for escrita (write)
                     System.out.println("Digite a fortuna a ser inserida:");
-                    String argumentos = br.readLine();
-                    json = "{\"method\":\"write\",\"args\":[\""+argumentos+"\"]}\n";
+                    String argumentos = br.readLine();//grava a fortuna a ser escritas no args
+                    json = "{\"method\":\"write\",\"args\":[\""+argumentos+"\"]}\n";//configura no formato json
                     // System.out.println(json);
-                    saida.writeUTF(json);
+                    saida.writeUTF(json);//envia json
                     break;
 
-                default:
+                default://se o tipo for invalido
                     System.out.println("Tipo inválido!");
                     break;
             }
