@@ -31,7 +31,8 @@ public class Servidor {
 	public final static Path path = Paths			
 			.get("fortune-br.txt");
 	private int NUM_FORTUNES = 0;
-
+	
+	//Contabiliza numero de fortunas no arquivo
 	public int countFortunes() throws FileNotFoundException {
 
 		int lineCount = 0;
@@ -56,8 +57,9 @@ public class Servidor {
 			System.out.println("SHOW: Excecao na leitura do arquivo.");
 		}
 		return lineCount;
-	}
+	}//end countFortunes
 
+	//Configura arquivo de fortunas em um HashMap
 	public void hashFortuna(HashMap<Integer, String> hm)
 			throws FileNotFoundException {
 
@@ -87,23 +89,24 @@ public class Servidor {
 		} catch (IOException e) {
 			System.out.println("SHOW: Excecao na leitura do arquivo.");
 		}
-	}
+	}//end hashFortuna
 
+	//le input do cliente e gera resposta
 	public String parser(String input_cliente, HashMap<Integer, String> hm){
 		// System.out.println("Input do cliente: "+input_cliente);
 		// Processamento do valor
 		
 		String resultado = "";
-		if (input_cliente.contains("\n")){
-				if(input_cliente.contains("read")){
+		if (input_cliente.contains("\n")){//se tiver \n no final do json
+				if(input_cliente.contains("read")){//se for requisicao de leitura
 
-					Random gerador = new Random();
-                    int valorAleatorio = gerador.nextInt(NUM_FORTUNES);//gera um valor de 0 a num max de fortunas
+					Random gerador = new Random();//inicializa gerador de numeros aleatorios
+                    			int valorAleatorio = gerador.nextInt(NUM_FORTUNES);//gera um valor de 0 a NUM_FORTUNES
 					resultado = "{\"result\":\""+hm.get(valorAleatorio)+"\"}\n";//retorna fortuna referente ao numero 
 
 				}else if(input_cliente.contains("write")){
 
-					String [] tokens = input_cliente.split("[{\\\"\\,\\[\\]\\:\\}]");
+					String [] tokens = input_cliente.split("[{\\\"\\,\\[\\]\\:\\}]");//segmenta input pra obter args
 					System.out.println("Split do input: "+tokens[12]);//posicao dos args no json
 					String fortuna = tokens[12]+"\n%";//monta a fortuna no formato do arquivo
 
@@ -119,14 +122,14 @@ public class Servidor {
 
 				}else{
 					System.out.println("Tipo inválido!");
-					resultado = "{\"result\":\"false\"}\n";
+					resultado = "{\"result\":\"false\"}\n";//se tipo for invalido retorna json de falha
 				}
 						
 		}else{
-			resultado = "{\"result\":\"false\"}\n";
+			resultado = "{\"result\":\"false\"}\n";//se nao tiver \n no final retorna json de falha
 		}
 
-		return resultado;
+		return resultado;//retorna resultado
 	}
 
 	public void iniciar() {
@@ -160,6 +163,7 @@ public class Servidor {
 			// Envio dos dados (resultado)
 			saida.writeUTF(resultado);
 
+			// Fecha socket
 			socket.close();
 
 		} catch (Exception e) {
